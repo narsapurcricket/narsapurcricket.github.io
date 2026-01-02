@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Narsapur Cricket Committee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial; margin:0; background:#f5f5f5; }
+header { background:#1b5e20; color:white; padding:20px; text-align:center; }
+nav { background:#fbc02d; padding:10px; text-align:center; }
+nav a { margin:0 10px; text-decoration:none; font-weight:bold; color:black; }
+section { padding:20px; }
+.box { background:white; padding:15px; margin:10px 0; border-radius:6px; }
+footer { background:#1b5e20; color:white; text-align:center; padding:10px; }
+input, textarea, button {
+  padding:8px; width:100%; margin:5px 0;
+}
+button { background:#1b5e20; color:white; border:none; cursor:pointer; }
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Narsapur Cricket Committee</h1>
+<p><b>Pride of Narsapur</b></p>
+</header>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#teams">Teams</a>
+<a href="#matches">Matches</a>
+<a href="#contact">Contact</a>
+<a href="#admin">Admin</a>
+</nav>
+
+<section id="home">
+<h2>Welcome</h2>
+<p>Narsapur Cricket Committee represents unity, passion, and sportsmanship.</p>
+</section>
+
+<section id="teams">
+<h2>Teams</h2>
+<div id="teamList"></div>
+</section>
+
+<section id="matches">
+<h2>Matches</h2>
+<div id="matchList"></div>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<p>Village: Narsapur G</p>
+<p>Mobile: 9398978479</p>
+</section>
+
+<section id="admin">
+<h2>Admin Panel</h2>
+
+<div id="loginBox">
+  <input id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<div id="adminPanel" class="hidden">
+
+  <h3>Add Team</h3>
+  <input id="teamInput" placeholder="Team Name">
+  <button onclick="addTeam()">Add Team</button>
+
+  <h3>Add Match</h3>
+  <textarea id="matchInput" placeholder="Team A vs Team B - Score"></textarea>
+  <button onclick="addMatch()">Add Match</button>
+
+</div>
+</section>
+
+<footer>
+<p>© 2026 Narsapur Cricket Committee</p>
+</footer>
+
+<script>
+const ADMIN_USER = "NSRADMIN";
+const DEFAULT_HASH = "3a9c0c5023bf2d15d0020518fc1516bce8442a2e7334f1700de63b73406befa2";
+let storedHash = localStorage.getItem("adminHash") || DEFAULT_HASH;
+
+async function sha256(text) {
+  const data = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+async function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  if (user !== ADMIN_USER) return alert("Invalid username");
+
+  const hash = await sha256(pass);
+  if (hash === storedHash) {
+    document.getElementById("adminPanel").classList.remove("hidden");
+    document.getElementById("loginBox").classList.add("hidden");
+    alert("Login successful");
+  } else {
+    alert("Wrong password");
+  }
+}
+
+function addTeam() {
+  let val = document.getElementById("teamInput").value;
+  if (!val) return;
+  let div = document.createElement("div");
+  div.className = "box";
+  div.innerText = val;
+  document.getElementById("teamList").appendChild(div);
+}
+
+function addMatch() {
+  let val = document.getElementById("matchInput").value;
+  if (!val) return;
+  let div = document.createElement("div");
+  div.className = "box";
+  div.innerText = val;
+  document.getElementById("matchList").appendChild(div);
+}
+</script>
+
+</body>
+</html>
