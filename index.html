@@ -6,71 +6,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --primary: #0b3c5d;
-  --secondary: #f4b400;
-  --light: #f5f5f5;
-}
-
+/* GLOBAL STYLES */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: var(--light);
+  background: #eef2f7;
 }
 
 /* HEADER */
 header {
-  background: var(--primary);
+  background: linear-gradient(90deg, #0d47a1, #1b5e20);
   color: white;
-  padding: 20px;
   text-align: center;
+  padding: 30px 10px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+header p {
+  font-size: 18px;
+  margin-top: 5px;
 }
 
 /* NAVBAR */
 nav {
+  background: #fbc02d;
   display: flex;
   justify-content: center;
   gap: 25px;
-  background: var(--secondary);
   padding: 12px;
-  flex-wrap: wrap;
+  font-weight: bold;
 }
 
 nav a {
   text-decoration: none;
   color: #000;
-  font-weight: bold;
+  font-size: 16px;
 }
 
-/* SECTIONS */
+/* SECTION */
 section {
   padding: 30px;
 }
 
 h2 {
-  color: var(--primary);
-  border-bottom: 3px solid var(--secondary);
-  display: inline-block;
-  padding-bottom: 5px;
+  color: #0d47a1;
+  border-left: 6px solid #fbc02d;
+  padding-left: 10px;
 }
 
 /* SLIDER */
 .slider {
-  max-width: 100%;
+  width: 100%;
   height: 350px;
+  border-radius: 12px;
   overflow: hidden;
-  position: relative;
-  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .slide {
-  display: none;
   width: 100%;
   height: 350px;
   object-fit: cover;
+  display: none;
 }
 
-.active {
+.slide.active {
   display: block;
 }
 
@@ -78,34 +82,41 @@ h2 {
 .card {
   background: white;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 15px 0;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 /* ADMIN */
 input, textarea, button {
   width: 100%;
   padding: 10px;
-  margin: 6px 0;
+  margin: 8px 0;
 }
 
 button {
-  background: var(--primary);
+  background: #0d47a1;
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
+  font-size: 15px;
 }
 
-footer {
-  background: var(--primary);
-  color: white;
-  text-align: center;
-  padding: 15px;
+button:hover {
+  background: #1b5e20;
 }
 
 .hidden {
   display: none;
+}
+
+/* FOOTER */
+footer {
+  background: #0d47a1;
+  color: white;
+  text-align: center;
+  padding: 15px;
 }
 </style>
 </head>
@@ -114,7 +125,7 @@ footer {
 
 <header>
   <h1>Narsapur Cricket Committee</h1>
-  <p><b>Pride of Narsapur</b></p>
+  <p>Pride of Narsapur</p>
 </header>
 
 <nav>
@@ -128,14 +139,14 @@ footer {
 
 <section id="home">
   <div class="slider">
-    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+1" class="slide active">
-    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+2" class="slide">
-    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+3" class="slide">
+    <img src="https://via.placeholder.com/1200x350/0d47a1/ffffff?text=Cricket+Action+1" class="slide active">
+    <img src="https://via.placeholder.com/1200x350/1b5e20/ffffff?text=Cricket+Action+2" class="slide">
+    <img src="https://via.placeholder.com/1200x350/fbc02d/000000?text=Cricket+Action+3" class="slide">
   </div>
 
   <p>
-    Narsapur Cricket Committee represents the pride, unity, and sportsmanship of our village.
-    We encourage youth participation and competitive cricket culture.
+    Narsapur Cricket Committee represents unity, energy, and sportsmanship.
+    We nurture young talent and promote competitive village cricket.
   </p>
 </section>
 
@@ -151,7 +162,7 @@ footer {
 
 <section id="gallery">
   <h2>Gallery</h2>
-  <p>Match highlights and team moments.</p>
+  <p>Match highlights and moments.</p>
 </section>
 
 <section id="contact">
@@ -197,8 +208,8 @@ setInterval(() => {
   slides[index].classList.add("active");
 }, 3000);
 
-async function sha256(text) {
-  const buf = new TextEncoder().encode(text);
+async function sha256(t) {
+  const buf = new TextEncoder().encode(t);
   const hash = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
@@ -207,7 +218,7 @@ async function login() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
 
-  if (u !== ADMIN) return alert("Invalid username");
+  if (u !== "NSRADMIN") return alert("Invalid Username");
 
   const h = await sha256(p);
   if (h === HASH) {
@@ -220,21 +231,21 @@ async function login() {
 }
 
 function addTeam() {
-  let v = document.getElementById("teamInput").value;
-  if (!v) return;
-  let d = document.createElement("div");
-  d.className = "card";
-  d.innerText = v;
-  document.getElementById("teamList").appendChild(d);
+  let val = document.getElementById("teamInput").value;
+  if (!val) return;
+  let div = document.createElement("div");
+  div.className = "card";
+  div.innerText = val;
+  document.getElementById("teamList").appendChild(div);
 }
 
 function addMatch() {
-  let v = document.getElementById("matchInput").value;
-  if (!v) return;
-  let d = document.createElement("div");
-  d.className = "card";
-  d.innerText = v;
-  document.getElementById("matchList").appendChild(d);
+  let val = document.getElementById("matchInput").value;
+  if (!val) return;
+  let div = document.createElement("div");
+  div.className = "card";
+  div.innerText = val;
+  document.getElementById("matchList").appendChild(div);
 }
 </script>
 
