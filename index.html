@@ -7,9 +7,9 @@
 
 <style>
 :root {
-  --primary: #1b5e20;
-  --secondary: #fbc02d;
-  --light: #f4f6f8;
+  --primary: #0b3c5d;
+  --secondary: #f4b400;
+  --light: #f5f5f5;
 }
 
 body {
@@ -20,25 +20,26 @@ body {
 
 /* HEADER */
 header {
-  background: linear-gradient(to right, #1b5e20, #4caf50);
+  background: var(--primary);
   color: white;
-  padding: 25px;
+  padding: 20px;
   text-align: center;
 }
 
+/* NAVBAR */
 nav {
   display: flex;
   justify-content: center;
+  gap: 25px;
   background: var(--secondary);
   padding: 12px;
-  gap: 20px;
   flex-wrap: wrap;
 }
 
 nav a {
   text-decoration: none;
+  color: #000;
   font-weight: bold;
-  color: black;
 }
 
 /* SECTIONS */
@@ -50,36 +51,36 @@ h2 {
   color: var(--primary);
   border-bottom: 3px solid var(--secondary);
   display: inline-block;
-  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+/* SLIDER */
+.slider {
+  max-width: 100%;
+  height: 350px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+.active {
+  display: block;
 }
 
 /* CARDS */
 .card {
   background: white;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 8px;
   margin: 15px 0;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-/* SLIDER */
-.slider {
-  position: relative;
-  max-width: 100%;
-  height: 280px;
-  overflow: hidden;
-  border-radius: 10px;
-}
-
-.slide {
-  display: none;
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
-}
-
-.active {
-  display: block;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
 /* ADMIN */
@@ -100,9 +101,12 @@ footer {
   background: var(--primary);
   color: white;
   text-align: center;
-  padding: 12px;
+  padding: 15px;
 }
-.hidden { display:none; }
+
+.hidden {
+  display: none;
+}
 </style>
 </head>
 
@@ -123,20 +127,15 @@ footer {
 </nav>
 
 <section id="home">
-  <h2>Welcome</h2>
-
-  <!-- IMAGE SLIDER -->
-  <div class="slider" id="slider">
-    <img src="https://via.placeholder.com/800x300?text=Cricket+1" class="slide active">
-    <img src="https://via.placeholder.com/800x300?text=Cricket+2" class="slide">
-    <img src="https://via.placeholder.com/800x300?text=Cricket+3" class="slide">
-    <img src="https://via.placeholder.com/800x300?text=Cricket+4" class="slide">
-    <img src="https://via.placeholder.com/800x300?text=Cricket+5" class="slide">
+  <div class="slider">
+    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+1" class="slide active">
+    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+2" class="slide">
+    <img src="https://via.placeholder.com/1200x350?text=Cricket+Action+3" class="slide">
   </div>
 
   <p>
-    Narsapur Cricket Committee represents unity, passion, and sportsmanship.
-    We promote local cricket talent and community bonding.
+    Narsapur Cricket Committee represents the pride, unity, and sportsmanship of our village.
+    We encourage youth participation and competitive cricket culture.
   </p>
 </section>
 
@@ -152,7 +151,7 @@ footer {
 
 <section id="gallery">
   <h2>Gallery</h2>
-  <p>Images shown in the slider above.</p>
+  <p>Match highlights and team moments.</p>
 </section>
 
 <section id="contact">
@@ -171,18 +170,13 @@ footer {
   </div>
 
   <div id="adminPanel" class="hidden">
-
     <h3>Add Team</h3>
     <input id="teamInput" placeholder="Team name">
     <button onclick="addTeam()">Add Team</button>
 
     <h3>Add Match</h3>
-    <input id="matchInput" placeholder="Team A vs Team B – Score">
+    <input id="matchInput" placeholder="Team A vs Team B - Score">
     <button onclick="addMatch()">Add Match</button>
-
-    <h3>Change Slider Images (Max 5)</h3>
-    <input type="text" id="imgUrl" placeholder="Paste Image URL">
-    <button onclick="addImage()">Add Image</button>
   </div>
 </section>
 
@@ -203,15 +197,16 @@ setInterval(() => {
   slides[index].classList.add("active");
 }, 3000);
 
-async function sha256(t) {
-  const buf = new TextEncoder().encode(t);
+async function sha256(text) {
+  const buf = new TextEncoder().encode(text);
   const hash = await crypto.subtle.digest("SHA-256", buf);
-  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 async function login() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
+
   if (u !== ADMIN) return alert("Invalid username");
 
   const h = await sha256(p);
@@ -240,15 +235,6 @@ function addMatch() {
   d.className = "card";
   d.innerText = v;
   document.getElementById("matchList").appendChild(d);
-}
-
-function addImage() {
-  let url = document.getElementById("imgUrl").value;
-  if (!url) return;
-  let img = document.createElement("img");
-  img.src = url;
-  img.className = "slide";
-  document.querySelector(".slider").appendChild(img);
 }
 </script>
 
