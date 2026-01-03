@@ -1,4 +1,5 @@
 import { db } from "./firebase.js";
+import "./session.js";
 import {
   collection,
   getDocs,
@@ -7,7 +8,7 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-const isAdmin = localStorage.getItem("isAdmin") === "true";
+const isAdmin = window.isAdminActive();
 const teamsContainer = document.getElementById("teamsContainer");
 
 // Show admin section only if admin
