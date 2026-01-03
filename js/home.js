@@ -1,8 +1,12 @@
 import { db, storage } from "./firebase.js";
+import "./session.js";
+
 import {
   collection,
   getDocs,
   addDoc,
+  deleteDoc,
+  doc,
   query,
   orderBy
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
@@ -10,12 +14,14 @@ import {
 import {
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
-import "./session.js";
-
+const slidesContainer = document.getElementById("slidesContainer");
+const dotsContainer = document.getElementById("dotsContainer");
 const isAdmin = window.isAdminActive();
+
 if (isAdmin) {
   document.getElementById("adminSliderSection").style.display = "block";
 }
@@ -24,31 +30,39 @@ let currentIndex = 0;
 let autoPlay = true;
 let interval;
 
-const slidesContainer = document.getElementById("slidesContainer");
-const dotsContainer = document.getElementById("dotsContainer");
-
-// LOAD SLIDES
+// ✅ LOAD SLIDES (FIXED)
 async function loadSlides() {
   slidesContainer.innerHTML = "";
   dotsContainer.innerHTML = "";
 
-  const q = query(
-    collection(db, "homeSlider"),
-    orderBy("order")
-  );
-
+  const q = query(collection(db, "homeSlider"), orderBy("order"));
   const snapshot = await getDocs(q);
 
-  snapshot.forEach((doc, index) => {
-    const imgUrl = doc.data().imageUrl;
+  snapshot.forEach((docSnap, index) => {
+    const data = docSnap.data();
 
-    // Slide
     const slide = document.createElement("div");
     slide.className = "slide";
-    slide.innerHTML = `<img src="${imgUrl}">`;
+
+    slide.innerHTML = `
+      <img src="${data.imageUrl}">
+      ${isAdmin ? `
+        <button style="
+          position:absolute;
+          top:15px;
+          right:15px;
+          background:red;
+          color:white;
+          border:none;
+          padding:6px;
+          cursor:pointer;"
+          onclick="deleteSlide('${docSnap.id}', '${data.imageUrl}')">
+          ✖
+        </button>` : ""}
+    `;
+
     slidesContainer.appendChild(slide);
 
-    // Dot
     const dot = document.createElement("span");
     dot.className = "dot";
     dot.onclick = () => goToSlide(index);
@@ -59,7 +73,7 @@ async function loadSlides() {
   startAutoPlay();
 }
 
-// SLIDER FUNCTIONS
+// SLIDER CONTROLS
 function updateSlider() {
   slidesContainer.style.transform =
     `translateX(-${currentIndex * 100}%)`;
@@ -69,31 +83,31 @@ function updateSlider() {
   });
 }
 
-window.nextSlide = function () {
+window.nextSlide = () => {
   currentIndex = (currentIndex + 1) %
     document.querySelectorAll(".slide").length;
   updateSlider();
 };
 
-window.prevSlide = function () {
+window.prevSlide = () => {
   currentIndex =
     (currentIndex - 1 + document.querySelectorAll(".slide").length) %
     document.querySelectorAll(".slide").length;
   updateSlider();
 };
 
-window.goToSlide = function (i) {
+window.goToSlide = (i) => {
   currentIndex = i;
   updateSlider();
 };
 
-window.togglePlay = function () {
+window.togglePlay = () => {
   autoPlay = !autoPlay;
   document.getElementById("playPauseBtn").innerText =
     autoPlay ? "⏸" : "▶";
-  autoPlay ? startAutoPlay() : clearInterval(interval);
 };
 
+// AUTO PLAY
 function startAutoPlay() {
   clearInterval(interval);
   interval = setInterval(() => {
@@ -104,11 +118,10 @@ function startAutoPlay() {
 // ADMIN UPLOAD
 window.uploadSlide = async function () {
   const file = document.getElementById("sliderImage").files[0];
-  if (!file) return alert("Select image");
+  if (!file) return alert("Select an image");
 
-  const count = document.querySelectorAll(".slide").length;
-  if (count >= 5) {
-    alert("Max 5 images allowed");
+  if (!["image/png", "image/jpeg"].includes(file.type)) {
+    alert("Only PNG/JPEG allowed");
     return;
   }
 
@@ -118,11 +131,21 @@ window.uploadSlide = async function () {
 
   await addDoc(collection(db, "homeSlider"), {
     imageUrl: url,
-    order: count + 1,
-    createdAt: new Date()
+    order: Date.now()
   });
 
   loadSlides();
 };
 
+// ADMIN DELETE
+window.deleteSlide = async function (id, url) {
+  if (!confirm("Delete this image?")) return;
+
+  await deleteDoc(doc(db, "homeSlider", id));
+  await deleteObject(ref(storage, url));
+
+  loadSlides();
+};
+
+// ✅ CALL THE CORRECT FUNCTION
 loadSlides();
