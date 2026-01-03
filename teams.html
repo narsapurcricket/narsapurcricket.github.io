@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teams</title>
+  <title>Teams - Narsapur (G) Cricket Association</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header><h1>Teams</h1></header>
+<header>
+  <h1>Teams</h1>
+  <p>Narsapur (G) Cricket Association</p>
+</header>
 
 <nav>
   <a href="index.html">Home</a>
   <a href="teams.html">Teams</a>
 </nav>
 
-<section id="teams"></section>
+<section>
+  <h2>Teams List</h2>
+  <div id="teamsContainer"></div>
+</section>
 
-<section id="adminArea" style="display:none;">
+<!-- ADMIN ONLY -->
+<section id="adminTeamSection" style="display:none;">
+  <h3>Add New Team</h3>
   <input id="teamName" placeholder="Team name">
   <button onclick="addTeam()">Add Team</button>
 </section>
