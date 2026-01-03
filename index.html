@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Narsapur (G) Cricket Association</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
-<header>
+<header class="header">
   <h1>Narsapur (G) Cricket Association</h1>
   <p>Pride of Narsapur</p>
 </header>
 
-<nav>
+<nav class="navbar">
   <a href="index.html">Home</a>
   <a href="teams.html">Teams</a>
   <a href="matches.html">Matches</a>
@@ -23,25 +25,23 @@
 <section class="slider">
   <div class="slides" id="slidesContainer"></div>
 
-  <!-- Controls -->
+  <div class="dots" id="dotsContainer"></div>
+
   <div class="slider-controls">
     <button onclick="prevSlide()">⏮</button>
     <button onclick="togglePlay()" id="playPauseBtn">⏸</button>
     <button onclick="nextSlide()">⏭</button>
   </div>
-
-  <!-- Dots -->
-  <div class="dots" id="dotsContainer"></div>
 </section>
 
 <!-- ADMIN ONLY -->
-<section id="adminSliderSection" style="display:none;">
+<section id="adminSliderSection" class="admin-box" style="display:none;">
   <h3>Update Home Slider (Max 5 images)</h3>
-  <input type="file" id="sliderImage">
+  <input type="file" id="sliderImage" accept="image/png,image/jpeg" />
   <button onclick="uploadSlide()">Upload Image</button>
 </section>
 
-<section>
+<section class="content">
   <h2>Welcome</h2>
   <p>
     We are committed to promoting village-level cricket,
