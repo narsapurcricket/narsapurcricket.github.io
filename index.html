@@ -19,6 +19,28 @@
   <a href="admin.html">Admin</a>
 </nav>
 
+<!-- HERO SLIDER -->
+<section class="slider">
+  <div class="slides" id="slidesContainer"></div>
+
+  <!-- Controls -->
+  <div class="slider-controls">
+    <button onclick="prevSlide()">⏮</button>
+    <button onclick="togglePlay()" id="playPauseBtn">⏸</button>
+    <button onclick="nextSlide()">⏭</button>
+  </div>
+
+  <!-- Dots -->
+  <div class="dots" id="dotsContainer"></div>
+</section>
+
+<!-- ADMIN ONLY -->
+<section id="adminSliderSection" style="display:none;">
+  <h3>Update Home Slider (Max 5 images)</h3>
+  <input type="file" id="sliderImage">
+  <button onclick="uploadSlide()">Upload Image</button>
+</section>
+
 <section>
   <h2>Welcome</h2>
   <p>
@@ -27,6 +49,8 @@
     in Narsapur (G).
   </p>
 </section>
+
+<script type="module" src="js/home.js"></script>
 
 </body>
 </html>
