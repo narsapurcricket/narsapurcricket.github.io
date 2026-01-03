@@ -1,6 +1,8 @@
 import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword } from
-  "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { signInWithEmailAndPassword }
+  from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+const SESSION_DURATION = 5 * 60 * 1000; // 5 minutes
 
 window.login = async function () {
   const email = document.getElementById("email").value;
@@ -8,10 +10,21 @@ window.login = async function () {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    localStorage.setItem("isAdmin", "true");
-    alert("Admin login successful");
+
+    const expiresAt = Date.now() + SESSION_DURATION;
+
+    localStorage.setItem(
+      "adminSession",
+      JSON.stringify({
+        loggedIn: true,
+        expiresAt: expiresAt
+      })
+    );
+
+    alert("Admin login successful (valid for 5 minutes)");
     window.location.href = "index.html";
-  } catch {
+
+  } catch (e) {
     alert("Invalid login");
   }
 };
