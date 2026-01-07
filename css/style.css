@@ -208,4 +208,10 @@ body {
 .content {
   padding: 20px;
 }
+/* Modern slider append – Home only */
+.slide { position: relative; }
+.slides { display: flex; transition: transform .5s ease; }
+.dot { display: inline-block; width: 10px; height: 10px; margin: 4px; cursor: pointer; }
+.dot.active { transform: scale(1.2); }
+.slider-controls { display: flex; gap: 10px; justify-content: center; }
 
