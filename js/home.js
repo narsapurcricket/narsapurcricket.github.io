@@ -1,92 +1,139 @@
+// Narsapur Cricket - Simple Slider Logic
+// Images coming from GitHub /images folder
+
 let currentIndex = 0;
 let autoPlay = true;
-let timer = null;
+let intervalId = null;
 
-const slidesContainer =
-document.getElementById("slidesContainer");
+const slides = document.querySelectorAll(".slide");
+const slidesContainer = document.getElementById("slidesContainer");
+const dotsContainer = document.getElementById("dotsContainer");
 
-const dotsContainer =
-document.getElementById("dotsContainer");
 
-function buildDots() {
+// CREATE DOTS DYNAMICALLY
+function createDots() {
 
- const slides =
- document.querySelectorAll(".slide");
+  dotsContainer.innerHTML = "";
 
- dotsContainer.innerHTML="";
+  for (let i = 0; i < slides.length; i++) {
 
- slides.forEach((_,i)=>{
-   const d=document.createElement("span");
-   d.className="dot"+(i===0?" active":"");
-   d.onclick=()=> goToSlide(i);
-   dotsContainer.appendChild(d);
- });
+    const dot = document.createElement("span");
+    dot.className = "dot";
+    dot.onclick = () => goToSlide(i);
 
-}
+    dotsContainer.appendChild(dot);
 
-function updateSlider() {
+  }
 
- const len =
- document.querySelectorAll(".slide").length;
-
- if(len===0)return;
-
- currentIndex =
- (currentIndex+len)%len;
-
- slidesContainer.style.transform=
- "translateX(-"+currentIndex*100+"%)";
-
- document.querySelectorAll(".dot")
- .forEach((dot,i)=>{
-    dot.classList.toggle("active",
-     i===currentIndex);
- });
+  updateDots();
 
 }
 
-window.nextSlide=function(){
- currentIndex++;
- updateSlider();
-};
 
-window.prevSlide=function(){
- currentIndex--;
- updateSlider();
-};
+// SHOW SLIDE BY INDEX
+function showSlide(index) {
 
-window.goToSlide=function(i){
- currentIndex=i;
- updateSlider();
-};
+  if (index >= slides.length) index = 0;
+  if (index < 0) index = slides.length - 1;
 
-window.togglePause=function(){
+  currentIndex = index;
 
- autoPlay=!autoPlay;
+  const offset = -index * 100;
 
- document.querySelector(".pause-left")
- .innerText= autoPlay?"⏸":"▶";
+  slidesContainer.style.transform =
+     "translateX(" + offset + "%)";
 
- if(!autoPlay) {
-   window.clearInterval(timer);
- } else {
-   startAutoPlay();
- }
 
-};
-
-function startAutoPlay(){
-
- if(timer)window.clearInterval(timer);
-
- timer=window.setInterval(()=>{
-   if(autoPlay){
-     currentIndex++;
-     updateSlider();
-   }
- },2500);
+  updateDots();
 
 }
 
-buildDots();
+
+// UPDATE ACTIVE DOT
+function updateDots() {
+
+  const allDots = document.querySelectorAll(".dot");
+
+  allDots.forEach((d, idx) => {
+
+    if (idx === currentIndex)
+       d.classList.add("active");
+    else
+       d.classList.remove("active");
+
+  });
+
+}
+
+
+// DRILL TO SLIDE
+function goToSlide(i) {
+  showSlide(i);
+}
+
+
+// AUTO PLAY
+function startAutoPlay() {
+
+  stopAutoPlay();
+
+  intervalId = setInterval(() => {
+
+    if (autoPlay)
+       showSlide(currentIndex + 1);
+
+  }, 3000);
+
+}
+
+
+// STOP AUTO PLAY
+function stopAutoPlay() {
+
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+
+}
+
+
+// PAUSE TOGGLE – EXPOSE TO UI
+window.togglePause = function () {
+
+  autoPlay = !autoPlay;
+
+
+  const btn =
+     document.getElementById("dotPauseBtn");
+
+
+  if (!autoPlay)
+     btn.innerText = "▶";
+  else
+     btn.innerText = "⏸";
+
+};
+
+
+
+// DOT NAV
+window.prevSlide = function () {
+  showSlide(currentIndex - 1);
+};
+
+window.nextSlide = function () {
+  showSlide(currentIndex + 1);
+};
+
+
+// ADMIN STUB
+window.uploadSlide = function () {
+  alert("Admin upload will be enabled later");
+};
+
+
+
+// INIT
+createDots();
 startAutoPlay();
