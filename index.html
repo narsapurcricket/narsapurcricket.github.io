@@ -34,27 +34,25 @@
   </div>
 </section>
 
-<!-- ADMIN ONLY – KEEP AS IT IS -->
-<section id="adminSliderSection" class="admin-box" style="display:none;">
-  <h3>Update Home Slider (Max 5 images)</h3>
-  <input type="file" id="sliderImage" accept="image/png,image/jpeg" />
-  <button onclick="uploadSlide()">Upload Image</button>
-</section>
-
-<section class="content">
-  <h2>Welcome</h2>
-  <p>
-    We are committed to promoting village-level cricket,
-    identifying young talent, and building sportsmanship in Narsapur.
-  </p>
-</section>
-
 <!-- ===== ONLY THIS CONTROL NEAR DOTS AT BOTTOM ===== -->
 <div class="slider-bottom-controls">
    <button onclick="togglePause()" id="sliderPauseBtn">⏸</button>
    <div id="dotsContainer"></div>
 </div>
 
+  <section class="content">
+  <h2>Welcome</h2>
+  <p>
+    We are committed to promoting village-level cricket,
+    identifying young talent, and building sportsmanship in Narsapur.
+  </p>
+</section>
+  <!-- ADMIN ONLY – KEEP AS IT IS -->
+<section id="adminSliderSection" class="admin-box" style="display:none;">
+  <h3>Update Home Slider (Max 5 images)</h3>
+  <input type="file" id="sliderImage" accept="image/png,image/jpeg" />
+  <button onclick="uploadSlide()">Upload Image</button>
+</section>
 <script type="module" src="js/home.js"></script>
 
 </body>
