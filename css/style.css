@@ -1,120 +1,11 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f0f4f8;
-}
-
-header {
-  background: linear-gradient(to right, #0d47a1, #1b5e20);
-  color: white;
-  text-align: center;
-  padding: 25px;
-}
-
-nav {
-  background: #fbc02d;
-  padding: 12px;
-  text-align: center;
-}
-
-nav a {
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  color: black;
-}
-/* HOME SLIDER */
-.slider {
-  position: relative;
-  width: 100%;
-  height: 420px;
-  overflow: hidden;
-  background: #000;
-}
-
-.slides {
-  display: flex;
-  transition: transform 0.6s ease-in-out;
-  height: 100%;
-}
-
-.slide {
-  min-width: 100%;
-  height: 100%;
-}
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.slider-controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-}
-
-.slider-controls button {
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.dots {
-  position: absolute;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
-}
-
-.dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 0 4px;
-  background: #bbb;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.dot.active {
-  background: #fbc02d;
-}
-
-
-section {
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-
-button {
-  background: #0d47a1;
-  color: white;
-  padding: 8px 14px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
+/* ===== GLOBAL ===== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f4f6f8;
 }
 
+/* ===== HEADER ===== */
 .header {
   background: linear-gradient(90deg, #0d47a1, #1b5e20);
   color: white;
@@ -122,6 +13,7 @@ body {
   text-align: center;
 }
 
+/* ===== NAVBAR ===== */
 .navbar {
   background: #fbc02d;
   display: flex;
@@ -136,22 +28,24 @@ body {
   font-weight: bold;
 }
 
+/* ===== SLIDER ===== */
 .slider {
   position: relative;
+  width: 100%;
   height: 420px;
   overflow: hidden;
-  background: black;
+  background: #000;
 }
 
 .slides {
   display: flex;
   height: 100%;
-  transition: transform 0.6s ease;
+  transition: transform 0.6s ease-in-out;
 }
 
 .slide {
   min-width: 100%;
-  position: relative;
+  height: 100%;
 }
 
 .slide img {
@@ -160,37 +54,39 @@ body {
   object-fit: cover;
 }
 
-.slider-controls {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+/* ===== SLIDER BOTTOM CONTROLS (PAUSE + DOTS ONLY) ===== */
+.slider-bottom-controls {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
 }
 
-.slider-controls button {
-  background: rgba(0,0,0,0.7);
+#sliderPauseBtn {
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 50%;
   cursor: pointer;
 }
 
-.dots {
-  position: absolute;
-  bottom: 60px;
-  width: 100%;
-  text-align: center;
+#sliderPauseBtn:hover {
+  transform: scale(1.1);
+}
+
+/* ===== DOTS ===== */
+#dotsContainer {
+  display: inline-block;
 }
 
 .dot {
+  display: inline-block;
   width: 10px;
   height: 10px;
-  background: #bbb;
-  display: inline-block;
   margin: 0 4px;
+  background: #bbb;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -199,19 +95,37 @@ body {
   background: #fbc02d;
 }
 
-.admin-box {
+/* ===== CONTENT ===== */
+section {
   padding: 20px;
-  background: #fff3cd;
-  margin: 20px;
 }
 
 .content {
   padding: 20px;
 }
-/* Modern slider append – Home only */
-.slide { position: relative; }
-.slides { display: flex; transition: transform .5s ease; }
-.dot { display: inline-block; width: 10px; height: 10px; margin: 4px; cursor: pointer; }
-.dot.active { transform: scale(1.2); }
-.slider-controls { display: flex; gap: 10px; justify-content: center; }
 
+/* ===== CARD ===== */
+.card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+/* ===== BUTTON ===== */
+button {
+  background: #0d47a1;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* ===== ADMIN ===== */
+.admin-box {
+  padding: 20px;
+  background: #fff3cd;
+  margin: 20px;
+}
