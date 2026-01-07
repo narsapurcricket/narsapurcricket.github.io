@@ -1,151 +1,107 @@
-import { db, storage } from "./firebase.js";
-import "./session.js";
-
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  query,
-  orderBy
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
-
-const slidesContainer = document.getElementById("slidesContainer");
-const dotsContainer = document.getElementById("dotsContainer");
-const isAdmin = window.isAdminActive();
-
-if (isAdmin) {
-  document.getElementById("adminSliderSection").style.display = "block";
-}
+// js/home.js
+// Narsapur (G) Cricket Association – Static GitHub Image Slider
+// Public view + Admin-ready (future enabling)
 
 let currentIndex = 0;
 let autoPlay = true;
-let interval;
+let timer = null;
 
-// ✅ LOAD SLIDES (FIXED)
-async function loadSlides() {
+// -------- GITHUB IMAGES (EDIT HERE LATER IF NEEDED) --------
+const GITHUB_IMAGES = [
+  "images/banner1.png",
+  "images/home2.png",
+  "images/home3.jpeg",
+  "images/home4.png",
+  "images/home5.jpeg"
+];
+// ------------------------------------------------------------
+
+const slidesContainer = document.getElementById("slidesContainer");
+const dotsContainer = document.getElementById("dotsContainer");
+const playBtn = document.getElementById("playPauseBtn");
+
+// -------- RENDER SLIDES FROM GITHUB --------
+function renderSlides() {
   slidesContainer.innerHTML = "";
-  dotsContainer.innerHTML = "";
 
-  const q = query(collection(db, "homeSlider"), orderBy("order"));
-  const snapshot = await getDocs(q);
+  GITHUB_IMAGES.slice((5).for statements.)
 
-  snapshot.forEach((docSnap, index) => {
-    const data = docSnap.data();
-
-    const slide = document.createElement("div");
-    slide.className = "slide";
-
-    slide.innerHTML = `
-      <img src="${data.imageUrl}">
-      ${isAdmin ? `
-        <button style="
-          position:absolute;
-          top:15px;
-          right:15px;
-          background:red;
-          color:white;
-          border:none;
-          padding:6px;
-          cursor:pointer;"
-          onclick="deleteSlide('${docSnap.id}', '${data.imageUrl}')">
-          ✖
-        </button>` : ""}
-    `;
-
-    slidesContainer.appendChild(slide);
-
+    // Dot creation
     const dot = document.createElement("span");
-    dot.className = "dot";
-    dot.onclick = () => goToSlide(index);
+    dot.className = "dot" + (i === 0 ? " active" : "");
+    dot.onclick = () => goToSlide(i);
     dotsContainer.appendChild(dot);
   });
-
-  updateSlider();
-  startAutoPlay();
 }
 
-// SLIDER CONTROLS
+// -------- UPDATE SLIDER POSITION --------
 function updateSlider() {
-  slidesContainer.style.transform =
-    `translateX(-${currentIndex * 100}%)`;
+  const len = document.querySelectorAll(".slide").length;
+  if (len === 0) return;
+
+  currentIndex = currentIndex % len;
+
+  slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
 
   document.querySelectorAll(".dot").forEach((d, i) => {
     d.classList.toggle("active", i === currentIndex);
   });
+
+  playBtn.innerText = autoPlay ? "⏸" : "▶";
 }
 
-window.nextSlide = () => {
-  currentIndex = (currentIndex + 1) %
-    document.querySelectorAll(".slide").length;
+// -------- AUTO PLAY CONTROL --------
+function startAutoPlay() {
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    if (autoPlay) nextSlide();
+  }, 3000);
+}
+
+function clearInterval() {
+  if (timer) {
+    window.clearInterval(timer);
+    timer = null;
+  }
+}
+
+// -------- NEXT / PREVIOUS --------
+window.nextSlide = function () {
+  currentIndex++;
   updateSlider();
 };
 
-window.prevSlide = () => {
-  currentIndex =
-    (currentIndex - 1 + document.querySelectorAll(".slide").length) %
-    document.querySelectorAll(".slide").length;
+window.prevSlide = function () {
+  const len = document.querySelectorAll(".slide").length;
+  currentIndex = (currentIndex - 1 + len) % len;
   updateSlider();
 };
 
-window.goToSlide = (i) => {
+window.goToSlide = function (i) {
   currentIndex = i;
   updateSlider();
 };
 
-window.togglePlay = () => {
+// -------- PLAY / STOP BUTTON --------
+window.togglePlay = function () {
   autoPlay = !autoPlay;
-  document.getElementById("playPauseBtn").innerText =
-    autoPlay ? "⏸" : "▶";
+  autoPlay ? startAutoPlay() : clearInterval();
 };
 
-// AUTO PLAY
-function startAutoPlay() {
-  clearInterval(interval);
-  interval = setInterval(() => {
-    if (autoPlay) nextSlide();
-  }, 4000);
-}
-
-// ADMIN UPLOAD
-window.uploadSlide = async function () {
-  const file = document.getElementById("sliderImage").files[0];
-  if (!file) return alert("Select an image");
-
-  if (!["image/png", "image/jpeg"].includes(file.type)) {
-    alert("Only PNG/JPEG allowed");
-    return;
-  }
-
-  const imgRef = ref(storage, `homeSlider/${Date.now()}_${file.name}`);
-  await uploadBytes(imgRef, file);
-  const url = await getDownloadURL(imgRef);
-
-  await addDoc(collection(db, "homeSlider"), {
-    imageUrl: url,
-    order: Date.now()
-  });
-
-  loadSlides();
+window.stopSlides = function () {
+  autoPlay = false;
+  updateSlider();
+  clearInterval();
 };
 
-// ADMIN DELETE
-window.deleteSlide = async function (id, url) {
-  if (!confirm("Delete this image?")) return;
-
-  await deleteDoc(doc(db, "homeSlider", id));
-  await deleteObject(ref(storage, url));
-
-  loadSlides();
+// -------- ADMIN SECTION (FUTURE) --------
+window.uploadSlide = function () {
+  alert("Admin upload will be enabled later using Firebase Storage.");
 };
+// ------------------------------------------------------------
 
-// ✅ CALL THE CORRECT FUNCTION
-loadSlides();
+// Initial run
+renderSlides();
+updateSlider();
+startAutoPlay();
