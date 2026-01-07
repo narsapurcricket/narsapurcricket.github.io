@@ -9,10 +9,6 @@ let timer = null;
 // -------- GITHUB IMAGES (EDIT HERE LATER IF NEEDED) --------
 const GITHUB_IMAGES = [
   "images/banner1.png",
-  "images/home2.png",
-  "images/home3.jpeg",
-  "images/home4.png",
-  "images/home5.jpeg"
 ];
 // ------------------------------------------------------------
 
