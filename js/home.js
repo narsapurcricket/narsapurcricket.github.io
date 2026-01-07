@@ -1,139 +1,113 @@
-// Narsapur Cricket - Simple Slider Logic
-// Images coming from GitHub /images folder
+// js/home.js
+// SIMPLE STATIC LOGIC – IMAGES FROM HTML ONLY
 
 let currentIndex = 0;
 let autoPlay = true;
 let intervalId = null;
 
-const slides = document.querySelectorAll(".slide");
 const slidesContainer = document.getElementById("slidesContainer");
-const dotsContainer = document.getElementById("dotsContainer");
 
+function slides() {
+  return document.querySelectorAll(".slide");
+}
 
-// CREATE DOTS DYNAMICALLY
 function createDots() {
 
-  dotsContainer.innerHTML = "";
+  const box = document.getElementById("dotsContainer");
+  box.innerHTML = "";
 
-  for (let i = 0; i < slides.length; i++) {
+  const len = slides().length;
 
-    const dot = document.createElement("span");
-    dot.className = "dot";
-    dot.onclick = () => goToSlide(i);
-
-    dotsContainer.appendChild(dot);
-
+  for (let i = 0; i < len; i++) {
+    const d = document.createElement("span");
+    d.className = "dot" + (i === 0 ? " active" : "");
+    d.onclick = () => goToSlide(i);
+    box.appendChild(d);
   }
 
-  updateDots();
-
 }
 
+function updateSlider() {
 
-// SHOW SLIDE BY INDEX
-function showSlide(index) {
+  const len = slides().length;
+  if (len === 0) return;
 
-  if (index >= slides.length) index = 0;
-  if (index < 0) index = slides.length - 1;
+  if (currentIndex >= len) currentIndex = 0;
+  if (currentIndex < 0) currentIndex = len - 1;
 
-  currentIndex = index;
-
-  const offset = -index * 100;
+  const offset = -currentIndex * 100;
 
   slidesContainer.style.transform =
-     "translateX(" + offset + "%)";
+      "translateX(" + offset + "%)";
 
-
-  updateDots();
-
-}
-
-
-// UPDATE ACTIVE DOT
-function updateDots() {
-
-  const allDots = document.querySelectorAll(".dot");
-
-  allDots.forEach((d, idx) => {
-
-    if (idx === currentIndex)
-       d.classList.add("active");
-    else
-       d.classList.remove("active");
-
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+     if (i === currentIndex)
+        dot.classList.add("active");
+     else
+        dot.classList.remove("active");
   });
 
 }
 
-
-// DRILL TO SLIDE
-function goToSlide(i) {
-  showSlide(i);
-}
-
-
-// AUTO PLAY
 function startAutoPlay() {
 
   stopAutoPlay();
 
   intervalId = setInterval(() => {
 
-    if (autoPlay)
-       showSlide(currentIndex + 1);
+    if (!autoPlay) return;
+
+    currentIndex++;
+    updateSlider();
 
   }, 3000);
 
 }
 
-
-// STOP AUTO PLAY
 function stopAutoPlay() {
-
   if (intervalId) {
     clearInterval(intervalId);
     intervalId = null;
   }
-
 }
 
+function goToSlide(i) {
+  currentIndex = i;
+  updateSlider();
+}
 
-// PAUSE TOGGLE – EXPOSE TO UI
 window.togglePause = function () {
 
   autoPlay = !autoPlay;
 
-
-  const btn =
-     document.getElementById("dotPauseBtn");
-
+  const btn = document.getElementById("sliderPauseBtn");
 
   if (!autoPlay)
      btn.innerText = "▶";
   else
      btn.innerText = "⏸";
 
+  autoPlay ? startAutoPlay() : stopAutoPlay();
+
 };
 
+// Admin stub – NOT TOUCHED
+window.uploadSlide = function () {
+  alert("Admin upload kept as it is for later.");
+};
 
-
-// DOT NAV
 window.prevSlide = function () {
-  showSlide(currentIndex - 1);
+  currentIndex--;
+  updateSlider();
 };
 
 window.nextSlide = function () {
-  showSlide(currentIndex + 1);
+  currentIndex++;
+  updateSlider();
 };
 
 
-// ADMIN STUB
-window.uploadSlide = function () {
-  alert("Admin upload will be enabled later");
-};
-
-
-
-// INIT
+// INIT ONLY
 createDots();
+updateSlider();
 startAutoPlay();
