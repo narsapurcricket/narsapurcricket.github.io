@@ -1,98 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Narsapur Cricket</title>
+  <meta charset="UTF-8" />
+  <title>Narsapur (G) Cricket Association</title>
 
-<style>
-body { background:#0a0a0a; color:#fff; font-family:Arial; }
-
-.top-title {
-  background:#0d47a1;
-  padding:16px;
-  text-align:center;
-  font-size:22px;
-}
-
-.h-menu {
- display:flex;
- justify-content:center;
- gap:25px;
- background:#ffc107;
- padding:10px;
-}
-
-.slider {
- margin-top:20px;
- max-width:95%;
- margin-left:auto;
- margin-right:auto;
-}
-
-.slides {
- display:flex;
- width:100%;
-}
-
-.slide img {
- width:100%;
- border-radius:12px;
-}
-
-.dots-line {
- display:flex;
- justify-content:center;
- gap:8px;
- margin-top:8px;
-}
-
-.dot {
- width:10px;
- height:10px;
- background:#ccc;
- border-radius:50%;
- cursor:pointer;
-}
-
-.dot.active { background:#ffc107; }
-
-</style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-<div class="top-title">
-  Narsapur (G) Cricket Association  
-  <div>🏏 Pride of Narsapur</div>
-</div>
+<header class="header">
+  <h1>Narsapur (G) Cricket Association</h1>
+  <p>Pride of Narsapur</p>
+</header>
 
-<nav class="h-menu">
- <a onclick="showHome()">Home</a>
- <a onclick="showTeams()">Teams</a>
- <a>Matches</a>
- <a>Gallery</a>
- <a onclick="openAdmin()">Admin</a>
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="teams.html">Teams</a>
+  <a href="matches.html">Matches</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="admin.html">Admin</a>
 </nav>
 
+<!-- HERO SLIDER -->
 <section class="slider">
 
- <div class="slides" id="slidesContainer">
-   <div class="slide"><img src="banner1.png"></div>
-   <div class="slide"><img src="images/home2.png"></div>
-   <div class="slide"><img src="images/home3.jpeg"></div>
-   <div class="slide"><img src="images/home4.jpeg"></div>
-   <div class="slide"><img src="images/home5.png"></div>
- </div>
+  <!-- SLIDES -->
+  <div class="slides" id="slidesContainer">
 
- <div class="dots-line">
-   <button onclick="togglePause()" class="pause-left">⏸</button>
-   <div id="dotsContainer"></div>
- </div>
+    <div class="slide"><img src="images/banner1.png" /></div>
+    <div class="slide"><img src="images/banner2.png" /></div>
+    <div class="slide"><img src="images/banner3.png" /></div>
+    <div class="slide"><img src="images/banner4.png" /></div>
+    <div class="slide"><img src="images/banner5.png" /></div>
+
+  </div>
+
+  <!-- DOTS + PAUSE BUTTON JUST LEFT -->
+  <div class="dots">
+     <button class="pause-left" onclick="togglePause()" id="dotPauseBtn">⏸</button>
+     <div id="dotsContainer"></div>
+  </div>
 
 </section>
 
-<script type="module" src="js/firebase.js"></script>
+<!-- ADMIN ONLY – KEEP AS IT IS -->
+<section id="adminSliderSection" class="admin-box" style="display:none;">
+  <h3>Update Home Slider (Max 5 images)</h3>
+  <input type="file" id="sliderImage" accept="image/png,image/jpeg" />
+  <button onclick="uploadSlide()">Upload Image</button>
+</section>
+
+<section class="content">
+  <h2>Welcome</h2>
+  <p>
+    We are committed to promoting village-level cricket,
+    identifying young talent, and building sportsmanship
+    in Narsapur (G).
+  </p>
+</section>
+
 <script type="module" src="js/home.js"></script>
-<script type="module" src="js/teams.js"></script>
 
 </body>
 </html>
