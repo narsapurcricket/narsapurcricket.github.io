@@ -8,6 +8,10 @@ let timer = null;
 // -------- EDIT HERE LATER (IMAGE PATHS) --------
 const GITHUB_IMAGES = [
   "images/bannes1.png",
+  "images/home2.png",
+  "images/home3.jpeg",
+  "images/home4.jpeg",
+  "images/home5.png"
 ];
 // ----------------------------------------------
 
