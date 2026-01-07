@@ -1,76 +1,89 @@
 // js/home.js
-// Narsapur (G) Cricket Association – Static GitHub Image Slider
-// Public view + Admin-ready (future enabling)
+// Narsapur (G) Cricket Association – GitHub Static Image Carousel
 
 let currentIndex = 0;
 let autoPlay = true;
 let timer = null;
 
-// -------- GITHUB IMAGES (EDIT HERE LATER IF NEEDED) --------
+// -------- EDIT HERE LATER (IMAGE PATHS) --------
 const GITHUB_IMAGES = [
-  "images/banner1.png",
+  "images/home1.jpeg",
+  "images/home2.png",
+  "images/home3.jpeg",
+  "images/home4.jpeg",
+  "images/home5.png"
 ];
-// ------------------------------------------------------------
+// ----------------------------------------------
 
 const slidesContainer = document.getElementById("slidesContainer");
 const dotsContainer = document.getElementById("dotsContainer");
-const playBtn = document.getElementById("playPauseBtn");
+const playPauseBtn = document.getElementById("playPauseBtn");
 
-// -------- RENDER SLIDES FROM GITHUB --------
+// -------- RENDER SLIDES --------
 function renderSlides() {
   slidesContainer.innerHTML = "";
+  dotsContainer.innerHTML = "";
 
-  GITHUB_IMAGES.slice((5).for statements.)
+  GITHUB_IMAGES.forEach((url, i) => {
+    const slideDiv = document.createElement("div");
+    slideDiv.className = "slide";
 
-    // Dot creation
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Narsapur Cricket Pride";
+
+    slideDiv.appendChild(img);
+    slidesContainer.appendChild(slideDiv);
+
     const dot = document.createElement("span");
     dot.className = "dot" + (i === 0 ? " active" : "");
     dot.onclick = () => goToSlide(i);
+
     dotsContainer.appendChild(dot);
   });
 }
 
-// -------- UPDATE SLIDER POSITION --------
+// -------- UPDATE SLIDER --------
 function updateSlider() {
   const len = document.querySelectorAll(".slide").length;
   if (len === 0) return;
 
-  currentIndex = currentIndex % len;
+  currentIndex = (currentIndex + len) % len;
 
-  slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+  slidesContainer.style.transform =
+    "translateX(-" + currentIndex * 100 + "%)";
 
   document.querySelectorAll(".dot").forEach((d, i) => {
     d.classList.toggle("active", i === currentIndex);
   });
 
-  playBtn.innerText = autoPlay ? "⏸" : "▶";
+  playPauseBtn.innerText = autoPlay ? "⏸" : "▶";
 }
 
-// -------- AUTO PLAY CONTROL --------
+// -------- AUTO PLAY --------
 function startAutoPlay() {
-  clearInterval(timer);
+  if (timer) clearInterval(timer);
 
-  timer = setInterval(() => {
+  timer = window.setInterval(() => {
     if (autoPlay) nextSlide();
   }, 3000);
 }
 
-function clearInterval() {
+function clearIntervalSlides() {
   if (timer) {
     window.clearInterval(timer);
     timer = null;
   }
 }
 
-// -------- NEXT / PREVIOUS --------
+// -------- CONTROLS --------
 window.nextSlide = function () {
   currentIndex++;
   updateSlider();
 };
 
 window.prevSlide = function () {
-  const len = document.querySelectorAll(".slide").length;
-  currentIndex = (currentIndex - 1 + len) % len;
+  currentIndex--;
   updateSlider();
 };
 
@@ -79,23 +92,21 @@ window.goToSlide = function (i) {
   updateSlider();
 };
 
-// -------- PLAY / STOP BUTTON --------
 window.togglePlay = function () {
   autoPlay = !autoPlay;
-  autoPlay ? startAutoPlay() : clearInterval();
+  autoPlay ? startAutoPlay() : clearIntervalSlides();
 };
 
 window.stopSlides = function () {
   autoPlay = false;
   updateSlider();
-  clearInterval();
+  clearIntervalSlides();
 };
 
-// -------- ADMIN SECTION (FUTURE) --------
+// -------- ADMIN (FUTURE) --------
 window.uploadSlide = function () {
-  alert("Admin upload will be enabled later using Firebase Storage.");
+  alert("Admin upload kept for later – currently GitHub images only.");
 };
-// ------------------------------------------------------------
 
 // Initial run
 renderSlides();
