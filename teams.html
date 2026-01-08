@@ -1,33 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Teams - Narsapur (G) Cricket Association</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <title>Teams | Narsapur (G) Cricket Association</title>
+
+  <!-- SAME CSS AS HOME -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
-<header>
-  <h1>Teams</h1>
-  <p>Narsapur (G) Cricket Association</p>
+<!-- HEADER (same as Home page) -->
+<header class="header">
+  <h1>Narsapur (G) Cricket Association</h1>
+  <p>Pride of Narsapur</p>
 </header>
 
-<nav>
+<!-- NAVBAR (same as Home page) -->
+<nav class="navbar">
   <a href="index.html">Home</a>
-  <a href="teams.html">Teams</a>
+  <a href="teams.html" class="active">Teams</a>
+  <a href="matches.html">Matches</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="admin.html">Admin</a>
 </nav>
 
-<section>
-  <h2>Teams List</h2>
-  <div id="teamsContainer"></div>
+<!-- MAIN CONTENT -->
+<section class="content">
+  <h2>Teams</h2>
+
+  <!-- Teams List -->
+  <div id="teamsContainer">
+    <!-- Teams will be dynamically loaded here -->
+  </div>
 </section>
 
-<!-- ADMIN ONLY -->
-<section id="adminTeamSection" style="display:none;">
+<!-- ADMIN ONLY SECTION -->
+<section id="adminTeamSection" class="admin-box" style="display:none;">
   <h3>Add New Team</h3>
-  <input id="teamName" placeholder="Team name">
+  <input id="teamName" placeholder="Team name" />
   <button onclick="addTeam()">Add Team</button>
 </section>
 
+<!-- JS -->
 <script type="module" src="js/teams.js"></script>
+
 </body>
 </html>
