@@ -129,3 +129,7 @@ button {
   background: #fff3cd;
   margin: 20px;
 }
+.navbar a.active {
+  border-bottom: 3px solid #0d47a1;
+  padding-bottom: 5px;
+}
